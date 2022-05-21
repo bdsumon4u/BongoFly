@@ -103,7 +103,7 @@
         .aa-input-container {
             width: 100%;
             height: 100%;
-            border: 3px solid #53a846;
+            border: 3px solid #d30e30;
             border-radius: 7px;
         }
         .algolia-autocomplete {

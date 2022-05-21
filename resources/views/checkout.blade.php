@@ -14,7 +14,7 @@
         margin-bottom: 10px;
     }
     .form-control {
-        border: 2px solid #28a745;
+        border: 2px solid #d30e30;
     }
     .input-number .form-control:focus {
         box-shadow: none;
@@ -98,7 +98,7 @@
                                         <label class="form-check-label" for="checkout-terms">I agree to the <span class="text-info" target="_blank" href="javascript:void(0);">terms and conditions</span>*</label>
                                     </div>
                                 </div>
-                                <button type="submit" place-order class="btn btn-primary btn-xl btn-block text-white">Confirm Order</button>
+                                <button type="submit" place-order class="btn btn-danger btn-xl btn-block text-white">Confirm Order</button>
                             </div>
                             <div class="card-divider"></div>
                             <div class="card-body p-1">
