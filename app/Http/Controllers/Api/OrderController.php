@@ -23,7 +23,7 @@ class OrderController extends Controller
         if ($request->get('status')) {
             $query->where('status', 'like', \request('status'));
         } else {
-            $query->where('status', '!=', 'PENDING');
+//            $query->where('status', '!=', 'PENDING');
         }
         $orders = $query->when(!$request->has('order'), function ($query) {
             $query->latest('id');

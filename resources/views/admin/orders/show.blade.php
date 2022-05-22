@@ -26,8 +26,17 @@
     }
 
     .page-body {
+        font-size: 20px;
+        margin-top: 0 !important;
         margin-left: 0 !important;
         page-break-after: always;
+    }
+    .page-body p {
+        font-size: 16px !important;
+    }
+    .only-print {
+        display: block;
+        padding-top: 2rem;
     }
 }
 </style>
@@ -67,7 +76,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="text-md-right">
-                                        <h3>Invoice #<span class="digits counter">{{ $order->id }}</span></h3>
+                                        <h3>Invoice #<span class="digits -counter-">{{ $order->id }}</span></h3>
                                         <p>
                                             Ordered At: {{ $order->created_at->format('M') }}<span class="digits"> {{ $order->created_at->format('d, Y') }}</span>
                                             <br> Invoiced At: {{ date('M') }}<span class="digits"> {{ date('d, Y') }}</span>
@@ -83,8 +92,16 @@
                             <div class="col-md-4">
                                 <div class="media">
                                     <div class="media-body m-l-20">
-                                        <h4 class="media-heading">{{ $order->name }}</h4>
-                                        <p><span class="digits">{{ $order->email }}</span><br>{{ $order->phone }}</p>
+                                        <h6 class="media-heading">Customer Information:</h6>
+                                        <div><b>Name:</b> {{ $order->name }}</div>
+                                        <div><b>Address:</b> {{ $order->address }}</div>
+                                        <p>
+                                            @if($order->email)
+                                            <span><b>Email:</b> {{ $order->email }}</span>
+                                            <br>
+                                            @endif
+                                            <span><b>Phone:</b> {{ $order->phone }}</span>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -121,23 +138,27 @@
                                         </tr>
                                         @endforeach
                                         <tr>
-                                            <th colspan="4">Subtotal</th>
-                                            <th>{{ $order->data->subtotal }}</th>
+                                            <th class="text-right" colspan="4">Subtotal</th>
+                                            <th class="text-right">{{ $order->data->subtotal }}</th>
                                         </tr>
                                         <tr>
-                                            <th colspan="4">Shipping</th>
-                                            <th>{{ $order->data->shipping_cost }}</th>
+                                            <th class="text-right" colspan="4">Delivery Charge</th>
+                                            <th class="text-right">{{ $order->data->shipping_cost }}</th>
                                         </tr>
                                         <tr>
-                                            <th colspan="4">Total</th>
-                                            <th>{{ $order->data->shipping_cost + $order->data->subtotal }}</th>
+                                            <th class="text-right" colspan="4">Total</th>
+                                            <th class="text-right">{{ $order->data->shipping_cost + $order->data->subtotal }}</th>
                                         </tr>
                                         <tr>
-                                            <th colspan="4">Paid</th>
-                                            <th>{{ $order->data->advanced ?? 0 }}</th>
+                                            <th class="text-right" colspan="4">Paid</th>
+                                            <th class="text-right">{{ $order->data->advanced ?? 0 }}</th>
                                         </tr><tr>
-                                            <th colspan="4">DUE</th>
-                                            <th>{{ $order->data->shipping_cost + $order->data->subtotal - ($order->data->advanced ?? 0) }}</th>
+                                            <th class="text-right" colspan="4">
+                                                <h4 class="mb-0">DUE</h4>
+                                            </th>
+                                            <th class="text-right">
+                                                <h4 class="mb-0">{{ $order->data->shipping_cost + $order->data->subtotal - ($order->data->advanced ?? 0) }}</h4>
+                                            </th>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -160,8 +181,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{asset('assets/js/counter/jquery.waypoints.min.js')}}"></script>
-<script src="{{asset('assets/js/counter/jquery.counterup.min.js')}}"></script>
-<script src="{{asset('assets/js/counter/counter-custom.js')}}"></script>
 <script src="{{asset('assets/js/print.js')}}"></script>
 @endpush
