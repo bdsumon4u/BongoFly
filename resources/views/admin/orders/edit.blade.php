@@ -108,7 +108,7 @@
                                 <div class="card mb-0">
                                     <div class="card-body">
                                         <h3 class="card-title">Your Order</h3>
-                                        
+
                                         <label for="status">Order Status</label>
                                         <select name="status" id="status" class="form-control">
                                             @foreach($statuses as $status)
@@ -126,11 +126,21 @@
                                                     <th>Shipping</th>
                                                     <td class="shipping">{!!  theMoney($data->shipping_cost)  !!}</td>
                                                 </tr>
-                                            </tbody>
-                                            <tfoot class="checkout__totals-footer">
                                                 <tr>
                                                     <th>Total</th>
                                                     <td>{!!  theMoney($data->shipping_cost + $data->subtotal)  !!}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Paid</th>
+                                                    <td class="advanced">
+                                                        <input type="text" class="border" name="advanced" id="advanced" value="{{ $data->advanced ?? 0 }}" style="max-width: 80px">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot class="checkout__totals-footer">
+                                                <tr>
+                                                    <th>DUE</th>
+                                                    <td id="due" data-total="{{ $data->shipping_cost + $data->subtotal }}">{!!  theMoney($data->shipping_cost + $data->subtotal - ($data->advanced ?? 0))  !!}</td>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -146,3 +156,14 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function () {
+            var due = $('#due');
+            $('[name="advanced"]').on('keyup', function (ev) {
+                due.text('TK ' + Number(due.data('total') - Number($(this).val())));
+            })
+        })
+    </script>
+@endpush

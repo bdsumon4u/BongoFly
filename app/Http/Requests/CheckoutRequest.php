@@ -44,6 +44,7 @@ class CheckoutRequest extends FormRequest
             'note' => 'nullable',
             'products' => 'required|array',
             'shipping' => 'required',
+            'advanced' => 'nullable',
         ] : [];
     }
 }

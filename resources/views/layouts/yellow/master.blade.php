@@ -25,7 +25,7 @@
             font-family: 'Merriweather Sans', sans-serif;
         }
         .page-header {
-            background-color: black;
+            background-color: #353535;
             color: white;
             margin-bottom: 1rem;
         }

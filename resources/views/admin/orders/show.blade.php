@@ -9,8 +9,8 @@
 <style>
 @media print {
     html, body {
-    height:100vh; 
-    margin: 0 !important; 
+    height:100vh;
+    margin: 0 !important;
     padding: 0 !important;
     overflow: hidden;
     }
@@ -131,6 +131,13 @@
                                         <tr>
                                             <th colspan="4">Total</th>
                                             <th>{{ $order->data->shipping_cost + $order->data->subtotal }}</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="4">Paid</th>
+                                            <th>{{ $order->data->advanced ?? 0 }}</th>
+                                        </tr><tr>
+                                            <th colspan="4">DUE</th>
+                                            <th>{{ $order->data->shipping_cost + $order->data->subtotal - ($order->data->advanced ?? 0) }}</th>
                                         </tr>
                                     </tbody>
                                 </table>

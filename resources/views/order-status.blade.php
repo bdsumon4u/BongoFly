@@ -71,11 +71,20 @@
                                     <th>Shipping</th>
                                     <td>{!! theMoney($data->shipping_cost) !!}</td>
                                 </tr>
-                                </tbody>
-                                <tfoot>
+                                <tr class="border"></tr>
                                 <tr>
                                     <th>Total</th>
                                     <td>{!! theMoney($data->subtotal + $data->shipping_cost) !!}</td>
+                                </tr>
+                                <tr>
+                                    <th>Advanced</th>
+                                    <td>{!! theMoney($data->advanced ?? 0) !!}</td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th>DUE</th>
+                                    <td>{!! theMoney($data->subtotal + $data->shipping_cost - ($data->advanced ?? 0)) !!}</td>
                                 </tr>
                                 </tfoot>
                             </table>

@@ -65,7 +65,11 @@ class OrderController extends Controller
             'status' => 'required',
         ]);
 
-        $order->update($data);
+        $order->update(array_merge($data, [
+            'data' => json_encode(array_merge((array)$order['data'], [
+                'advanced' => $request->get('advanced', 0),
+            ]))
+        ]));
         return redirect(route('admin.orders.show', $order))->withSuccess('Order Has Been Updated.');
     }
 
