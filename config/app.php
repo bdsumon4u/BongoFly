@@ -22,6 +22,8 @@ return [
         'COMPLETED',
         'CANCELLED',
         'RETURNED',
+        'WAITING',
+        'PAYMENT ISSUE',
     ],
 
     /*

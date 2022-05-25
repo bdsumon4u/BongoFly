@@ -65,8 +65,24 @@ class OrderController extends Controller
             'status' => 'required',
         ]);
 
+        $oData = (array)$order['data'];
+        $dCharge = setting('delivery_charge');
+        $shipping_area = $request->get('shipping', $oData['shipping_area']);
+        switch ($shipping_area) {
+            case 'Inside Dhaka':
+                $shipping_cost = $dCharge->inside_dhaka ?? config('services.shipping.Inside Dhaka');
+                break;
+            case 'Outside Dhaka':
+                $shipping_cost = $dCharge->outside_dhaka ?? config('services.shipping.Outside Dhaka');
+                break;
+            default:
+                $shipping_cost = 100;
+        }
+
         $order->update(array_merge($data, [
-            'data' => json_encode(array_merge((array)$order['data'], [
+            'data' => json_encode(array_merge($oData, [
+                'shipping_area' => $shipping_area,
+                'shipping_cost' => $shipping_cost,
                 'advanced' => $request->get('advanced', 0),
             ]))
         ]));

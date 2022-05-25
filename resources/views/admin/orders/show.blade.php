@@ -7,6 +7,12 @@
 
 @push('styles')
 <style>
+    .invoice th,
+    .invoice td {
+        padding: 0.5rem;
+    }
+</style>
+<style>
 @media print {
     html, body {
     height:100vh;
@@ -89,23 +95,23 @@
                         <hr>
                         <!-- End InvoiceTop-->
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-7">
                                 <div class="media">
                                     <div class="media-body m-l-20">
                                         <h6 class="media-heading">Customer Information:</h6>
                                         <div><b>Name:</b> {{ $order->name }}</div>
                                         <div><b>Address:</b> {{ $order->address }}</div>
-                                        <p>
+                                        <div>
                                             @if($order->email)
                                             <span><b>Email:</b> {{ $order->email }}</span>
                                             <br>
                                             @endif
                                             <span><b>Phone:</b> {{ $order->phone }}</span>
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-5">
                                 <div class="text-md-right" id="project">
                                     <h6>Note</h6>
                                     <p>{{ $order->note ?? 'N/A' }}</p>
@@ -129,7 +135,7 @@
                                         @foreach($order->products as $product)
                                         <tr>
                                             <td>
-                                                <img src="{{ $product->image }}" width="100" height="100" alt="">
+                                                <img src="{{ $product->image }}" width="60" height="60" alt="">
                                             </td>
                                             <td>{{ $product->name }}</td>
                                             <td>{{ $product->price }}</td>
@@ -137,30 +143,32 @@
                                             <td>{{ $product->quantity * $product->price }}</td>
                                         </tr>
                                         @endforeach
-                                        <tr>
-                                            <th class="text-right" colspan="4">Subtotal</th>
-                                            <th class="text-right">{{ $order->data->subtotal }}</th>
-                                        </tr>
-                                        <tr>
-                                            <th class="text-right" colspan="4">Delivery Charge</th>
-                                            <th class="text-right">{{ $order->data->shipping_cost }}</th>
-                                        </tr>
-                                        <tr>
-                                            <th class="text-right" colspan="4">Total</th>
-                                            <th class="text-right">{{ $order->data->shipping_cost + $order->data->subtotal }}</th>
-                                        </tr>
-                                        <tr>
-                                            <th class="text-right" colspan="4">Paid</th>
-                                            <th class="text-right">{{ $order->data->advanced ?? 0 }}</th>
-                                        </tr><tr>
-                                            <th class="text-right" colspan="4">
-                                                <h4 class="mb-0">DUE</h4>
-                                            </th>
-                                            <th class="text-right">
-                                                <h4 class="mb-0">{{ $order->data->shipping_cost + $order->data->subtotal - ($order->data->advanced ?? 0) }}</h4>
-                                            </th>
-                                        </tr>
                                     </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th class="text-right" colspan="4">Subtotal</th>
+                                        <th class="text-right">{{ $order->data->subtotal }}</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right" colspan="4">Delivery Charge</th>
+                                        <th class="text-right">{{ $order->data->shipping_cost }}</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right" colspan="4">Total</th>
+                                        <th class="text-right">{{ $order->data->shipping_cost + $order->data->subtotal }}</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right" colspan="4">Paid</th>
+                                        <th class="text-right">{{ $order->data->advanced ?? 0 }}</th>
+                                    </tr><tr>
+                                        <th class="text-right" colspan="4">
+                                            <h4 class="mb-0">DUE</h4>
+                                        </th>
+                                        <th class="text-right">
+                                            <h4 class="mb-0">{{ $order->data->shipping_cost + $order->data->subtotal - ($order->data->advanced ?? 0) }}</h4>
+                                        </th>
+                                    </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                             <!-- End Table-->

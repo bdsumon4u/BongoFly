@@ -520,7 +520,7 @@
                 $('[name="address"]').parents('.form-group').addClass(shipping ? 'd-block' : 'd-none');
                 if (shipping) {
                     $('#'+shipping).prop('checked', true);
-                    var shipping = Number($('#'+shipping).data('val'));
+                    shipping = Number($('#'+shipping).data('val'));
                     $('.shipping span').text(shipping)
                 } else {
                     shipping = 0;

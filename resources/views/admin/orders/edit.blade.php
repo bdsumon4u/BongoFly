@@ -47,13 +47,14 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="d-block">Shipping City <span class="text-danger">*</span></label>
+                                            @php $dcharge = setting('delivery_charge') @endphp
                                             <div class="form-control @error('shipping') is-invalid @enderror">
                                                 <div class="custom-control custom-radio custom-control-inline">
-                                                    <input type="radio" class="custom-control-input" id="inside-dhaka" name="shipping" value="Inside Dhaka" data-val="50" {{ $data->shipping_area == 'Inside Dhaka' ? 'checked' : '' }} disabled>
+                                                    <input type="radio" class="custom-control-input" id="inside-dhaka" name="shipping" value="Inside Dhaka" data-val="{{ $dcharge->inside_dhaka ?? config('services.shipping.Inside Dhaka') }}" {{ $data->shipping_area == 'Inside Dhaka' ? 'checked' : '' }}>
                                                     <label class="custom-control-label" for="inside-dhaka">Inside Dhaka</label>
                                                 </div>
                                                 <div class="custom-control custom-radio custom-control-inline">
-                                                    <input type="radio" class="custom-control-input" id="outside-dhaka" name="shipping" value="Outside Dhaka" data-val="100" {{ $data->shipping_area == 'Outside Dhaka' ? 'checked' : '' }} disabled>
+                                                    <input type="radio" class="custom-control-input" id="outside-dhaka" name="shipping" value="Outside Dhaka" data-val="{{ $dcharge->outside_dhaka ?? config('services.shipping.Outside Dhaka') }}" {{ $data->shipping_area == 'Outside Dhaka' ? 'checked' : '' }}>
                                                     <label class="custom-control-label" for="outside-dhaka">Outside Dhaka</label>
                                                 </div>
                                             </div>
@@ -120,7 +121,7 @@
                                             <tbody class="checkout__totals-subtotals">
                                                 <tr>
                                                     <th>Subtotal</th>
-                                                    <td class="checkout-subtotal">{!!  theMoney($data->subtotal)  !!}</td>
+                                                    <td class="checkout-subtotal" data-total="{{ $data->subtotal }}">{!!  theMoney($data->subtotal)  !!}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Shipping</th>
@@ -128,7 +129,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th>Total</th>
-                                                    <td>{!!  theMoney($data->shipping_cost + $data->subtotal)  !!}</td>
+                                                    <td class="total">{!!  theMoney($data->shipping_cost + $data->subtotal)  !!}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Paid</th>
@@ -140,7 +141,7 @@
                                             <tfoot class="checkout__totals-footer">
                                                 <tr>
                                                     <th>DUE</th>
-                                                    <td id="due" data-total="{{ $data->shipping_cost + $data->subtotal }}">{!!  theMoney($data->shipping_cost + $data->subtotal - ($data->advanced ?? 0))  !!}</td>
+                                                    <td id="due">{!!  theMoney($data->shipping_cost + $data->subtotal - ($data->advanced ?? 0))  !!}</td>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -160,10 +161,23 @@
 @push('scripts')
     <script>
         $(document).ready(function () {
-            var due = $('#due');
+            $('[name="shipping"]').on('change', function (ev) {
+                calculateDue();
+            });
+
             $('[name="advanced"]').on('keyup', function (ev) {
-                due.text('TK ' + Number(due.data('total') - Number($(this).val())));
+                calculateDue();
             })
+
+            function calculateDue() {
+                var subtotal = Number($('td.checkout-subtotal').data('total'));
+                var shipping = Number($('[name="shipping"]:checked').data('val'));
+                var advanced = Number($('#advanced').val());
+                var total = subtotal + shipping;
+                $('td.total').text('TK ' + total);
+                $('td.shipping').text('TK ' + shipping);
+                $('#due').text('TK ' + (total - advanced));
+            }
         })
     </script>
 @endpush
